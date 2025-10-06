@@ -429,6 +429,9 @@ async def regenerate_prompts(session_id: str):
 # Include the router in the main app
 app.include_router(api_router)
 
+# Serve static files
+app.mount("/static", StaticFiles(directory="static"), name="static")
+
 app.add_middleware(
     CORSMiddleware,
     allow_credentials=True,
