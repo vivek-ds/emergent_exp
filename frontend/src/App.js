@@ -453,6 +453,17 @@ function App() {
           <Route path="/" element={<HomePage />} />
         </Routes>
       </BrowserRouter>
+      <Toaster 
+        position="top-right"
+        theme="dark"
+        toastOptions={{
+          style: {
+            background: '#1f2937',
+            color: '#f3f4f6',
+            border: '1px solid #374151'
+          }
+        }}
+      />
     </div>
   );
 }
