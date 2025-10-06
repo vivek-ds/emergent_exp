@@ -380,8 +380,15 @@ async def generate_dj_persona(
         if uploaded_photos_count > 0:
             photo_context = f"Based on {uploaded_photos_count} reference photos provided by the user, "
     
+    # Get user name from session if available
+    user_name = None
+    if session_id in sessions_store:
+        spotify_data = sessions_store[session_id].get('spotify_data')
+        if spotify_data:
+            user_name = spotify_data.get('user_name')
+    
     # Generate persona
-    persona = synth_persona(artists_text, genres_text)
+    persona = synth_persona(artists_text, genres_text, user_name)
     logging.info(f"Generated persona: {persona['dj_name']}")
     
     # Build prompts (only 4 for better performance)
