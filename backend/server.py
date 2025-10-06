@@ -155,40 +155,73 @@ def build_prompts(persona: Dict[str, Any], count: int = 4, photo_context: str = 
     return prompts
 
 async def generate_images(prompts: List[str], session_id: str) -> List[str]:
-    """Generate images using direct Gemini API"""
+    """Generate images - for now return prompts for external use"""
     image_urls = []
     
-    # Use Gemini 1.5 Flash for image generation
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    # For this MVP, we'll return detailed prompts that can be used with any image generator
+    # This is much faster and more reliable than waiting for image generation APIs
     
-    # Only generate first 4 images for better performance
+    session_generated_dir = generated_dir / session_id
+    session_generated_dir.mkdir(exist_ok=True)
+    
     for i, prompt in enumerate(prompts[:4]):
         try:
-            logging.info(f"Generating image {i+1} with prompt: {prompt[:100]}...")
+            logging.info(f"Processing prompt {i+1}: {prompt[:100]}...")
             
-            # Generate image using Gemini
-            response = model.generate_content([prompt])
+            # Create a detailed prompt file that users can copy-paste
+            filename = f"dj_prompt_{i+1}.txt"
+            filepath = session_generated_dir / filename
             
-            # Note: Gemini 1.5 Flash primarily does text, for actual image generation
-            # we might need to use a different approach or model
-            # For now, let's create placeholder images with the persona info
+            with open(filepath, "w") as f:
+                f.write(f"DJ PERSONA IMAGE PROMPT #{i+1}\n\n{prompt}\n\nUse this prompt with:\n- DALL-E 3\n- Midjourney\n- Stable Diffusion\n- Any AI image generator")
             
-            if response and response.text:
-                # Create a simple text-based response for now
-                # In a production app, you'd use an image generation model
-                filename = f"dj_image_{i+1}.txt"
-                session_generated_dir = generated_dir / session_id
-                session_generated_dir.mkdir(exist_ok=True)
-                filepath = session_generated_dir / filename
-                
-                with open(filepath, "w") as f:
-                    f.write(f"DJ Image {i+1}\nPrompt: {prompt}\nGenerated: {response.text[:200]}")
-                
-                image_urls.append(filename)
-                logging.info(f"Successfully generated content {i+1}: {filename}")
+            # For demo purposes, let's create a simple placeholder image
+            placeholder_filename = f"dj_image_{i+1}.png"
+            placeholder_path = session_generated_dir / placeholder_filename
+            
+            # Create a simple colored square as placeholder (1024x1024)
+            from PIL import Image, ImageDraw, ImageFont
+            
+            img = Image.new('RGB', (1024, 1024), color=(15, 15, 16))  # Dark background
+            draw = ImageDraw.Draw(img)
+            
+            # Add gradient effect
+            for y in range(1024):
+                color_value = int(15 + (y / 1024) * 40)
+                draw.line([(0, y), (1024, y)], fill=(color_value, color_value + 10, color_value + 20))
+            
+            # Add text
+            try:
+                font = ImageFont.truetype("/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf", 60)
+            except:
+                font = ImageFont.load_default()
+            
+            # Add title
+            text = f"DJ IMAGE #{i+1}"
+            bbox = draw.textbbox((0, 0), text, font=font)
+            text_width = bbox[2] - bbox[0]
+            text_height = bbox[3] - bbox[1]
+            x = (1024 - text_width) // 2
+            y = 400
+            
+            draw.text((x, y), text, fill=(0, 212, 170), font=font)
+            
+            # Add subtitle
+            subtitle = "AI Generated Placeholder"
+            bbox2 = draw.textbbox((0, 0), subtitle, font=font)
+            text_width2 = bbox2[2] - bbox2[0]
+            x2 = (1024 - text_width2) // 2
+            y2 = y + text_height + 20
+            
+            draw.text((x2, y2), subtitle, fill=(255, 107, 53), font=font)
+            
+            img.save(placeholder_path, 'PNG')
+            image_urls.append(placeholder_filename)
+            
+            logging.info(f"Successfully created placeholder image {i+1}: {placeholder_filename}")
             
         except Exception as e:
-            logging.error(f"Error generating image {i+1}: {str(e)}")
+            logging.error(f"Error creating placeholder image {i+1}: {str(e)}")
             continue
     
     return image_urls
