@@ -104,8 +104,15 @@ def synth_persona(artists_text: str, genres_text: str, user_name: str = None) ->
     if not vibe_phrases:
         vibe_phrases.append('eclectic selection and dance-floor focus')
     
-    # Generate DJ name
-    base_name = artists[0].split()[0] if artists else 'Meta'
+    # Generate DJ name based on user's name
+    if user_name:
+        # Clean and use user's name as base
+        base_name = user_name.split()[0] if user_name else 'DJ'
+        # Remove any numbers or special characters, capitalize
+        base_name = ''.join(c for c in base_name if c.isalpha()).capitalize()
+    else:
+        base_name = 'Meta'
+    
     suffix = 'Pulse' if 'warehouse-grade energy' in vibe_phrases else 'Wave'
     dj_name = f'{base_name}{suffix}'
     
