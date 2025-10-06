@@ -457,7 +457,6 @@ app.include_router(api_router)
 # Serve static files through API router
 @api_router.get("/static/generated/{session_id}/{filename}")
 async def serve_generated_image(session_id: str, filename: str):
-    from fastapi.responses import FileResponse
     filepath = generated_dir / session_id / filename
     if filepath.exists():
         return FileResponse(filepath)
