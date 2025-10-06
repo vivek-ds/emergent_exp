@@ -18,7 +18,8 @@ from PIL import Image
 import io
 import secrets
 import urllib.parse
-import google.generativeai as genai
+from google import genai as google_genai
+from google.genai import types
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
