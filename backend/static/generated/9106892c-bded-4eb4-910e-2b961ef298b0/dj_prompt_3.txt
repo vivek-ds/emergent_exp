@@ -1,0 +1,9 @@
+DJ PERSONA IMAGE PROMPT #3
+
+Professional DJ portrait; contemporary editorial lighting; 50mm depth of field; no extra people; crisp face details; cinematic contrast; high quality. A action behind DJ decks of DJ Deadmau5Pulse, wearing heritage textile accent, in modern club stage with lighting, styled as motion blur, using color palette #0F0F10, #12131A, #00D4AA, #FF6B35, professional lighting, high quality photograph.
+
+Use this prompt with:
+- DALL-E 3
+- Midjourney
+- Stable Diffusion
+- Any AI image generator

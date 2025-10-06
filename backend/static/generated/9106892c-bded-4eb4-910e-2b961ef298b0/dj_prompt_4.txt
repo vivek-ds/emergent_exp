@@ -1,0 +1,9 @@
+DJ PERSONA IMAGE PROMPT #4
+
+Professional DJ portrait; contemporary editorial lighting; 50mm depth of field; no extra people; crisp face details; cinematic contrast; high quality. A wide shot with equipment of DJ Deadmau5Pulse, wearing oversized bomber, in professional studio setup, styled as neon accents, using color palette #0F0F10, #12131A, #00D4AA, #FF6B35, professional lighting, high quality photograph.
+
+Use this prompt with:
+- DALL-E 3
+- Midjourney
+- Stable Diffusion
+- Any AI image generator

@@ -1,0 +1,9 @@
+DJ PERSONA IMAGE PROMPT #2
+
+Professional DJ portrait; contemporary editorial lighting; 50mm depth of field; no extra people; crisp face details; cinematic contrast; high quality. A half-body with headphones of DJ Deadmau5Pulse, wearing utility vest + headphones, in underground club booth, styled as editorial portrait, using color palette #0F0F10, #12131A, #00D4AA, #FF6B35, professional lighting, high quality photograph.
+
+Use this prompt with:
+- DALL-E 3
+- Midjourney
+- Stable Diffusion
+- Any AI image generator
