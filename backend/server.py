@@ -172,7 +172,7 @@ async def generate_images(prompts: List[str], session_id: str) -> List[str]:
                 prompt=prompt,
                 config=types.GenerateImagesConfig(
                     number_of_images=1,
-                    aspect_ratio='ASPECT_RATIO_SQUARE'
+                    aspect_ratio='1:1'
                 )
             )
             
