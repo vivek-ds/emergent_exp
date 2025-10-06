@@ -359,46 +359,18 @@ const GalleryPage = ({ result, onBack }) => {
                 </CardContent>
               </Card>
             ) : (
-              /* Prompts Display */
-              <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm" data-testid="prompts-card">
+              /* No Images Generated - Show Message */
+              <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm" data-testid="no-images-card">
                 <CardHeader>
-                  <CardTitle className="text-white flex justify-between items-center">
-                    AI Prompts for Your DJ Persona
-                    <Button
-                      onClick={handleRegeneratePrompts}
-                      disabled={regenerating}
-                      size="sm"
-                      variant="outline"
-                      className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10"
-                      data-testid="regenerate-prompts-btn"
-                    >
-                      {regenerating ? 'Regenerating...' : 'Regenerate Prompts'}
-                    </Button>
-                  </CardTitle>
+                  <CardTitle className="text-white">⚡ Images are being generated...</CardTitle>
                   <CardDescription className="text-gray-400">
-                    Copy these prompts to use with any AI image generator
+                    Your DJ persona is being created. This may take a few moments.
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4 max-h-96 overflow-y-auto">
-                    {prompts.map((prompt, index) => (
-                      <div key={index} className="bg-gray-800 p-4 rounded-lg border border-gray-700">
-                        <div className="flex justify-between items-start mb-2">
-                          <span className="text-sm font-medium text-cyan-400">Prompt {index + 1}</span>
-                          <Button
-                            onClick={() => navigator.clipboard.writeText(prompt)}
-                            size="sm"
-                            variant="ghost"
-                            className="text-xs text-gray-400 hover:text-white"
-                          >
-                            Copy
-                          </Button>
-                        </div>
-                        <p className="text-sm text-gray-300 font-mono leading-relaxed">
-                          {prompt}
-                        </p>
-                      </div>
-                    ))}
+                  <div className="text-center py-8">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-cyan-500 mx-auto mb-4"></div>
+                    <p className="text-gray-300">Creating your unique DJ persona images...</p>
                   </div>
                 </CardContent>
               </Card>
