@@ -454,15 +454,8 @@ async def regenerate_prompts(session_id: str):
 # Include the router in the main app
 app.include_router(api_router)
 
-# Serve static files through API router
-@api_router.get("/static/generated/{session_id}/{filename}")
-async def serve_generated_image(session_id: str, filename: str):
-    filepath = generated_dir / session_id / filename
-    logging.info(f"Attempting to serve image: {filepath}")
-    logging.info(f"File exists: {filepath.exists()}")
-    if filepath.exists():
-        return FileResponse(filepath)
-    raise HTTPException(status_code=404, detail=f"Image not found: {filepath}")
+# Serve static files
+app.mount("/api/static", StaticFiles(directory="static"), name="static")
 
 app.add_middleware(
     CORSMiddleware,
