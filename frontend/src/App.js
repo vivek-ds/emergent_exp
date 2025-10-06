@@ -158,7 +158,8 @@ const HomePage = () => {
                       </Button>
                     </div>
                     <div className="text-sm text-gray-300">
-                      <p><strong>Artists:</strong> {spotifyData.artists?.slice(0, 3).join(', ')} {spotifyData.artists?.length > 3 && '...'}</p>
+                      <p><strong>User:</strong> {spotifyData.user_name}</p>
+                      <p><strong>Top Artists:</strong> {spotifyData.artists?.slice(0, 3).join(', ')} {spotifyData.artists?.length > 3 && '...'}</p>
                       <p><strong>Genres:</strong> {spotifyData.genres?.slice(0, 3).join(', ')} {spotifyData.genres?.length > 3 && '...'}</p>
                     </div>
                   </div>
