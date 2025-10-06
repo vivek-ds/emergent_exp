@@ -286,50 +286,25 @@ async def get_spotify_data(session_id: str):
 async def generate_dj_persona(
     session_id: Optional[str] = Form(None),
     artists_text: str = Form(""),
-    genres_text: str = Form(""),
-    photos: List[UploadFile] = File([])
+    genres_text: str = Form("")
 ):
     """Generate DJ persona with images"""
     if not session_id:
         session_id = str(uuid.uuid4())
     
-    # Create session directory
-    session_uploads_dir = uploads_dir / session_id
-    session_generated_dir = generated_dir / session_id
-    session_uploads_dir.mkdir(exist_ok=True)
-    session_generated_dir.mkdir(exist_ok=True)
-    
-    # Process uploaded photos
-    uploaded_photos = []
-    for photo in photos:
-        if photo.content_type and photo.content_type.startswith('image/'):
-            try:
-                # Read and process image
-                image_data = await photo.read()
-                image = Image.open(io.BytesIO(image_data))
-                
-                # Resize if too large
-                if image.width > 1280 or image.height > 1280:
-                    image.thumbnail((1280, 1280), Image.Resampling.LANCZOS)
-                
-                # Save processed image
-                filename = f"photo_{len(uploaded_photos) + 1}_{photo.filename}"
-                filepath = session_uploads_dir / filename
-                image.save(filepath, format='PNG')
-                uploaded_photos.append(filename)
-                
-            except Exception as e:
-                logging.error(f"Error processing photo {photo.filename}: {str(e)}")
-                continue
+    logging.info(f"Starting DJ persona generation for session: {session_id}")
     
     # Generate persona
     persona = synth_persona(artists_text, genres_text)
+    logging.info(f"Generated persona: {persona['dj_name']}")
     
-    # Build prompts
-    prompts = build_prompts(persona, 8)
+    # Build prompts (only 4 for better performance)
+    prompts = build_prompts(persona, 4)
     
     # Generate images
-    image_urls = await generate_images(prompts)
+    image_urls = await generate_images(prompts, session_id)
+    
+    logging.info(f"Generated {len(image_urls)} images for {persona['dj_name']}")
     
     # Save session data to MongoDB
     session_data = {
@@ -337,7 +312,6 @@ async def generate_dj_persona(
         'persona': persona,
         'prompts': prompts,
         'image_urls': image_urls,
-        'uploaded_photos': uploaded_photos,
         'artists_text': artists_text,
         'genres_text': genres_text,
         'created_at': datetime.now(timezone.utc)
@@ -350,8 +324,8 @@ async def generate_dj_persona(
         'persona': persona,
         'prompts': prompts,
         'image_urls': image_urls,
-        'uploaded_photos': uploaded_photos,
-        'use_image_api': True
+        'use_image_api': True,
+        'total_images': len(image_urls)
     }
 
 @api_router.get("/session/{session_id}")
