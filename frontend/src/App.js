@@ -75,10 +75,6 @@ const HomePage = () => {
       formData.append('session_id', sessionId || '');
       formData.append('artists_text', artistsText);
       formData.append('genres_text', genresText);
-      
-      photos.forEach((photo, index) => {
-        formData.append('photos', photo);
-      });
 
       const response = await axios.post(`${API}/generate`, formData, {
         headers: {
