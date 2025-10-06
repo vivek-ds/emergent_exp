@@ -282,7 +282,8 @@ async def get_spotify_data(session_id: str):
 async def generate_dj_persona(
     session_id: Optional[str] = Form(None),
     artists_text: str = Form(""),
-    genres_text: str = Form("")
+    genres_text: str = Form(""),
+    photos: List[UploadFile] = File([])
 ):
     """Generate DJ persona with images"""
     if not session_id:
@@ -290,19 +291,37 @@ async def generate_dj_persona(
     
     logging.info(f"Starting DJ persona generation for session: {session_id}")
     
+    # Process uploaded photos for context (but don't store/display them)
+    uploaded_photos_count = 0
+    photo_context = ""
+    
+    if photos:
+        for photo in photos:
+            if photo.content_type and photo.content_type.startswith('image/'):
+                try:
+                    # Just count them for context, don't save
+                    uploaded_photos_count += 1
+                except Exception as e:
+                    logging.error(f"Error processing photo {photo.filename}: {str(e)}")
+                    continue
+        
+        if uploaded_photos_count > 0:
+            photo_context = f"Based on {uploaded_photos_count} reference photos provided by the user, "
+    
     # Generate persona
     persona = synth_persona(artists_text, genres_text)
     logging.info(f"Generated persona: {persona['dj_name']}")
     
     # Build prompts (only 4 for better performance)
-    prompts = build_prompts(persona, 4)
+    # Add photo context to prompts if photos were provided
+    prompts = build_prompts(persona, 4, photo_context)
     
     # Generate images
     image_urls = await generate_images(prompts, session_id)
     
     logging.info(f"Generated {len(image_urls)} images for {persona['dj_name']}")
     
-    # Save session data to MongoDB
+    # Save session data to MongoDB (don't include uploaded_photos in response)
     session_data = {
         'session_id': session_id,
         'persona': persona,
@@ -310,6 +329,7 @@ async def generate_dj_persona(
         'image_urls': image_urls,
         'artists_text': artists_text,
         'genres_text': genres_text,
+        'photos_provided': uploaded_photos_count,
         'created_at': datetime.now(timezone.utc)
     }
     
@@ -321,7 +341,8 @@ async def generate_dj_persona(
         'prompts': prompts,
         'image_urls': image_urls,
         'use_image_api': True,
-        'total_images': len(image_urls)
+        'total_images': len(image_urls),
+        'photos_used': uploaded_photos_count > 0
     }
 
 @api_router.get("/session/{session_id}")
