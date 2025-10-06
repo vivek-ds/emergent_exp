@@ -208,14 +208,35 @@ const HomePage = () => {
             </Card>
           </div>
 
-          {/* Info Card */}
-          <Card className="mt-8 bg-gray-900/50 border-gray-700 backdrop-blur-sm" data-testid="info-card">
+          {/* Photo Upload Card */}
+          <Card className="mt-8 bg-gray-900/50 border-gray-700 backdrop-blur-sm" data-testid="photo-upload-card">
             <CardHeader>
-              <CardTitle className="text-white">✨ AI-Generated DJ Persona</CardTitle>
+              <CardTitle className="text-white">📸 Upload Your Photos</CardTitle>
               <CardDescription className="text-gray-400">
-                Our AI will create a unique DJ persona based on your music taste, complete with a custom name, bio, and 4 professional DJ photos
+                Upload 6-12 clear, front-facing photos for the AI to create your DJ persona (optional but recommended for better results)
               </CardDescription>
             </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <Input
+                  type="file"
+                  multiple
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                  className="bg-gray-800 border-gray-600 text-white file:bg-gray-700 file:text-white file:border-0 file:rounded-md file:px-4 file:py-2"
+                  data-testid="photo-upload-input"
+                />
+                {photos.length > 0 && (
+                  <div className="text-sm text-gray-300 flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-5 h-5 bg-green-500 text-white rounded-full text-xs">✓</span>
+                    Selected: {photos.length} photo{photos.length !== 1 ? 's' : ''}
+                  </div>
+                )}
+                <p className="text-xs text-gray-500">
+                  ✨ The AI will analyze your photos and music taste to create a unique DJ persona with professional images
+                </p>
+              </div>
+            </CardContent>
           </Card>
 
           {/* Generate Button */}
