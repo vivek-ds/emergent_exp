@@ -127,29 +127,25 @@ def synth_persona(artists_text: str, genres_text: str) -> Dict[str, Any]:
         'vibe_phrases': vibe_phrases
     }
 
-def build_prompts(persona: Dict[str, Any], count: int = 8) -> List[str]:
+def build_prompts(persona: Dict[str, Any], count: int = 4) -> List[str]:
     """Build image generation prompts"""
-    anchor = "Maintain the same subject across all images; contemporary editorial lighting; 50mm/85mm depth of field; no extra people; crisp face; slight motion blur on hands; cinematic contrast."
+    anchor = "Professional DJ portrait; contemporary editorial lighting; 50mm depth of field; no extra people; crisp face details; cinematic contrast; high quality."
     
     variants = [
-        ('portrait press shot', 'studio portrait'),
-        ('half-body with headphones', 'underground booth'),
-        ('action behind DJ decks', 'club stage'),
-        ('wide festival banner frame', 'festival stage'),
-        ('graphic flyer composition', 'neon hallway'),
-        ('close-up with accessory', 'studio portrait'),
-        ('crowd bokeh action', 'foggy dance floor'),
-        ('side-profile moody shot', 'underground booth')
+        ('portrait press shot', 'studio with dark background'),
+        ('half-body with headphones', 'underground club booth'),
+        ('action behind DJ decks', 'modern club stage with lighting'),
+        ('wide shot with equipment', 'professional studio setup')
     ]
     
     prompts = []
-    for i in range(count):
-        title, location = variants[i % len(variants)]
+    for i in range(min(count, len(variants))):
+        title, location = variants[i]
         outfit = persona['outfits'][i % len(persona['outfits'])]
         style_tag = persona['style_tags'][i % len(persona['style_tags'])]
         palette_str = ', '.join(persona['palette'])
         
-        prompt = f"{anchor} A {title} of the same person as DJ {persona['dj_name']}, wearing {outfit}, in {location}, styled as {style_tag}, color palette {palette_str}, energetic, cinematic lighting."
+        prompt = f"{anchor} A {title} of DJ {persona['dj_name']}, wearing {outfit}, in {location}, styled as {style_tag}, using color palette {palette_str}, professional lighting, high quality photograph."
         prompts.append(prompt)
     
     return prompts
