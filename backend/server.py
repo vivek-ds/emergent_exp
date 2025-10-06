@@ -87,7 +87,7 @@ class SpotifyTokens(BaseModel):
 # Store sessions in memory (for demo purposes)
 sessions_store = {}
 
-def synth_persona(artists_text: str, genres_text: str) -> Dict[str, Any]:
+def synth_persona(artists_text: str, genres_text: str, user_name: str = None) -> Dict[str, Any]:
     """Synthesize DJ persona from Spotify data"""
     artists = [a.strip() for a in artists_text.split(',') if a.strip()] if artists_text else []
     genres = [g.strip().lower() for g in genres_text.split(',') if g.strip()] if genres_text else []
