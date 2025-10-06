@@ -292,8 +292,18 @@ async def spotify_callback(code: str, state: str):
     
     tokens = response.json()
     
-    # Fetch user's top artists
+    # Fetch user's profile and top artists
     spotify_headers = {'Authorization': f"Bearer {tokens['access_token']}"}
+    
+    # Get user profile
+    profile_response = requests.get('https://api.spotify.com/v1/me', headers=spotify_headers)
+    if profile_response.status_code != 200:
+        raise HTTPException(status_code=400, detail="Failed to fetch user profile")
+    
+    profile_data = profile_response.json()
+    user_name = profile_data.get('display_name') or profile_data.get('id', 'User')
+    
+    # Get top artists  
     artists_response = requests.get(
         'https://api.spotify.com/v1/me/top/artists?time_range=short_term&limit=20',
         headers=spotify_headers
