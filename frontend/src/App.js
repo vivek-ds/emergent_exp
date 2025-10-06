@@ -18,7 +18,6 @@ const HomePage = () => {
   const [sessionId, setSessionId] = useState(null);
   const [artistsText, setArtistsText] = useState('');
   const [genresText, setGenresText] = useState('');
-  const [photos, setPhotos] = useState([]);
   const [generating, setGenerating] = useState(false);
   const [result, setResult] = useState(null);
 
