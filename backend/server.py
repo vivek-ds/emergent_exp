@@ -321,6 +321,7 @@ async def spotify_callback(code: str, state: str):
         all_genres.update(artist.get('genres', []))
     
     spotify_data = {
+        'user_name': user_name,
         'artists': artists,
         'genres': list(all_genres),
         'artists_text': ', '.join(artists),
