@@ -62,7 +62,10 @@ const HomePage = () => {
     }
   };
 
-  // Removed photo upload functionality
+  const handlePhotoUpload = (event) => {
+    const files = Array.from(event.target.files);
+    setPhotos(files);
+  };
 
   const handleGenerate = async () => {
     if (!artistsText.trim() && !genresText.trim()) {
