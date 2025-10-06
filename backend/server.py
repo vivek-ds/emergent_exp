@@ -154,15 +154,16 @@ def build_prompts(persona: Dict[str, Any], count: int = 8) -> List[str]:
     
     return prompts
 
-async def generate_images(prompts: List[str]) -> List[str]:
+async def generate_images(prompts: List[str], session_id: str) -> List[str]:
     """Generate images using Gemini Nano Banana"""
     image_urls = []
     
-    for i, prompt in enumerate(prompts):
+    # Only generate first 4 images for better performance
+    for i, prompt in enumerate(prompts[:4]):
         try:
             chat = LlmChat(
                 api_key=EMERGENT_LLM_KEY,
-                session_id=f"dj-generation-{uuid.uuid4()}",
+                session_id=f"dj-generation-{session_id}-{i}",
                 system_message="You are an expert AI image generator creating professional DJ persona photos."
             )
             chat.with_model("gemini", "gemini-2.5-flash-image-preview").with_params(modalities=["image", "text"])
@@ -176,12 +177,15 @@ async def generate_images(prompts: List[str]) -> List[str]:
                 image_bytes = base64.b64decode(image_data)
                 
                 filename = f"dj_image_{i+1}.png"
-                filepath = generated_dir / filename
+                session_generated_dir = generated_dir / session_id
+                session_generated_dir.mkdir(exist_ok=True)
+                filepath = session_generated_dir / filename
                 
                 with open(filepath, "wb") as f:
                     f.write(image_bytes)
                 
                 image_urls.append(filename)
+                logging.info(f"Successfully generated image {i+1}: {filename}")
             
         except Exception as e:
             logging.error(f"Error generating image {i+1}: {str(e)}")
