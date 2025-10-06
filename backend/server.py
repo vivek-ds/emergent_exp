@@ -16,9 +16,9 @@ import json
 import asyncio
 from PIL import Image
 import io
-from emergentintegrations.llm.chat import LlmChat, UserMessage
 import secrets
 import urllib.parse
+import google.generativeai as genai
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
