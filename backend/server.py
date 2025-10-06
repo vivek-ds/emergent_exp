@@ -42,8 +42,8 @@ SPOTIFY_REDIRECT_URI = os.environ['SPOTIFY_REDIRECT_URI']
 EMERGENT_LLM_KEY = os.environ['EMERGENT_LLM_KEY']
 GEMINI_API_KEY = os.environ['GEMINI_API_KEY']
 
-# Configure Gemini
-genai.configure(api_key=GEMINI_API_KEY)
+# Configure Gemini client
+gemini_client = google_genai.Client(api_key=GEMINI_API_KEY)
 
 # Create static directories
 static_dir = ROOT_DIR / 'static'
