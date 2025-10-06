@@ -458,9 +458,11 @@ app.include_router(api_router)
 @api_router.get("/static/generated/{session_id}/{filename}")
 async def serve_generated_image(session_id: str, filename: str):
     filepath = generated_dir / session_id / filename
+    logging.info(f"Attempting to serve image: {filepath}")
+    logging.info(f"File exists: {filepath.exists()}")
     if filepath.exists():
         return FileResponse(filepath)
-    raise HTTPException(status_code=404, detail="Image not found")
+    raise HTTPException(status_code=404, detail=f"Image not found: {filepath}")
 
 app.add_middleware(
     CORSMiddleware,
