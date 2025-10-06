@@ -127,7 +127,7 @@ def synth_persona(artists_text: str, genres_text: str) -> Dict[str, Any]:
         'vibe_phrases': vibe_phrases
     }
 
-def build_prompts(persona: Dict[str, Any], count: int = 4) -> List[str]:
+def build_prompts(persona: Dict[str, Any], count: int = 4, photo_context: str = "") -> List[str]:
     """Build image generation prompts"""
     anchor = "Professional DJ portrait; contemporary editorial lighting; 50mm depth of field; no extra people; crisp face details; cinematic contrast; high quality."
     
@@ -145,7 +145,7 @@ def build_prompts(persona: Dict[str, Any], count: int = 4) -> List[str]:
         style_tag = persona['style_tags'][i % len(persona['style_tags'])]
         palette_str = ', '.join(persona['palette'])
         
-        prompt = f"{anchor} A {title} of DJ {persona['dj_name']}, wearing {outfit}, in {location}, styled as {style_tag}, using color palette {palette_str}, professional lighting, high quality photograph."
+        prompt = f"{photo_context}{anchor} A {title} of DJ {persona['dj_name']}, wearing {outfit}, in {location}, styled as {style_tag}, using color palette {palette_str}, professional lighting, high quality photograph."
         prompts.append(prompt)
     
     return prompts
