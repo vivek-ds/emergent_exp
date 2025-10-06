@@ -331,16 +331,27 @@ const GalleryPage = ({ result, onBack }) => {
             {result.image_urls && result.image_urls.length > 0 ? (
               <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm" data-testid="generated-images-card">
                 <CardHeader>
-                  <CardTitle className="text-white">Generated DJ Persona Images</CardTitle>
+                  <CardTitle className="text-white flex items-center gap-2">
+                    🎧 Your AI-Generated DJ Persona Images
+                    <Badge variant="secondary" className="bg-cyan-500/20 text-cyan-400 border-cyan-500/50">
+                      {result.image_urls.length} Images
+                    </Badge>
+                  </CardTitle>
+                  <CardDescription className="text-gray-300">
+                    Professional DJ photos generated based on your music taste
+                  </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     {result.image_urls.map((imageUrl, index) => (
-                      <div key={index} className="aspect-square bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                      <div key={index} className="aspect-square bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
                         <img
                           src={`${BACKEND_URL}/static/generated/${result.session_id}/${imageUrl}`}
                           alt={`Generated DJ persona image ${index + 1}`}
-                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-200"
+                          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                          onError={(e) => {
+                            e.target.style.display = 'none';
+                          }}
                         />
                       </div>
                     ))}
