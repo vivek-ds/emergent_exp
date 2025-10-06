@@ -376,10 +376,11 @@ const GalleryPage = ({ result, onBack }) => {
                     {result.image_urls.map((imageUrl, index) => (
                       <div key={index} className="aspect-square bg-gray-800 rounded-xl overflow-hidden shadow-lg border border-gray-700">
                         <img
-                          src={`${BACKEND_URL}/static/generated/${result.session_id}/${imageUrl}`}
+                          src={`${BACKEND_URL}/api/static/generated/${result.session_id}/${imageUrl}`}
                           alt={`Generated DJ persona image ${index + 1}`}
                           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                           onError={(e) => {
+                            console.error(`Failed to load image: ${e.target.src}`);
                             e.target.style.display = 'none';
                           }}
                         />
