@@ -326,27 +326,6 @@ const GalleryPage = ({ result, onBack }) => {
 
           {/* Results */}
           <div className="lg:col-span-2 space-y-6">
-            {/* Uploaded Photos */}
-            {result.uploaded_photos && result.uploaded_photos.length > 0 && (
-              <Card className="bg-gray-900/50 border-gray-700 backdrop-blur-sm" data-testid="uploaded-photos-card">
-                <CardHeader>
-                  <CardTitle className="text-white">Uploaded Photos</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="grid grid-cols-3 gap-3">
-                    {result.uploaded_photos.map((photo, index) => (
-                      <div key={index} className="aspect-square bg-gray-800 rounded-lg overflow-hidden">
-                        <img
-                          src={`${BACKEND_URL}/static/uploads/${result.session_id}/${photo}`}
-                          alt={`Uploaded photo ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            )}
 
             {/* Generated Images */}
             {result.image_urls && result.image_urls.length > 0 ? (
